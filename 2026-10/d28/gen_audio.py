@@ -18,7 +18,7 @@ for k in (sys.argv[1:] or S):
         if r.returncode: print(k, seed, "GEN FAIL", r.stdout[:200], flush=True); continue
         run("ffmpeg", "-v", "error", "-y", "-i", f"{A}/raw-{k}.wav", "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-ar", "48000", f"{A}/v-{k}.wav")
         run("curl", "-s", "-m", "300", "http://localhost:3900/v1/audio/transcriptions", "-F", f"file=@{A}/v-{k}.wav", "-F", "model=whisper-1",
-            "-F", "language=en", "-F", "response_format=verbose_json", "-F", "timestamp_granularities[]=word", "-o", f"{A}/t-{k}.json")
+            "-F", "language=en", "-F", f"prompt={S[k][:400]}", "-F", "response_format=verbose_json", "-F", "timestamp_granularities[]=word", "-o", f"{A}/t-{k}.json")
         try: txt = json.load(open(f"{A}/t-{k}.json"))["text"]
         except Exception: txt = ""
         ratio = difflib.SequenceMatcher(None, norm(S[k]), norm(txt)).ratio()
