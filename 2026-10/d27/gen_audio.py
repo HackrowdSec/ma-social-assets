@@ -4,7 +4,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 A = os.path.join(HERE, "audio")
 S = json.load(open(os.path.join(HERE, "scripts.json")))
 INSTRUCT = "male, middle-aged, moderate pitch, american accent"
-def norm(t): return re.sub(r"[^a-z0-9 ]", "", t.lower())
+NUM = {"1": "one", "2": "two", "3": "three", "4": "four", "5": "five", "10": "ten", "15": "fifteen", "90": "ninety"}
+def norm(t):
+    t = re.sub(r"[^a-z0-9 ]", " ", t.lower())
+    return " ".join(NUM.get(w, w) for w in t.split())
 def run(*a): return subprocess.run(a, capture_output=True, text=True)
 for k in (sys.argv[1:] or S):
     open(f"{A}/txt-{k}.txt", "w").write(S[k])

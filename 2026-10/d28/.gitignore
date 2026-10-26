@@ -1,0 +1,6 @@
+out/
+audio/
+kit/
+final/old/
+*.log
+*.err
