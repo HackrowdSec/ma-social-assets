@@ -1,0 +1,270 @@
+# Week B, Mon 2 to Sun 8 Nov beats for build_v2.py. OWASP API Security Top 10 (2023) week.
+# Anchors are plain words (no digits, apostrophes or hyphens) so they match the transcript.
+SPECS = {
+    # MON 2
+    "02-0700": {"kicker": "API SECURITY", "cta": False, "beats": [
+        ("hook", None, ("Any token", "works."), ("code", ["GET /api/account", "Authorization: Bearer eyJ...", "exp: 2024 (expired)", "-> 200 OK"], [2, 3])),
+        ("stmt", "Broken authentication is", ("OWASP API #2:", "broken authentication.")),
+        ("stmt", "The server reads", ("It reads the token.", "It never verifies it.")),
+        ("list", "Check", "Check on every request", [("signature valid", "Valid signature"), ("Has it expired", "Not expired"), ("issued by you", "Issued by you, for this API"), ("been revoked", "Not revoked")]),
+        ("stmt", "Then test it", ("Expired or edited?", "Both must fail.")),
+    ]},
+    "02-0900": {"kicker": "COMPLIANCE", "cta": True, "beats": [
+        ("hook", None, ("Your customer's law", "is now yours."), ("ui", ["Inbox", "From: EU bank, procurement", "Re: NIS2 supplier questionnaire"], [2])),
+        ("stmt", "It is an", ("NIS2: EU law for", "essential companies.")),
+        ("stmt", "They must manage", ("Their supply chain", "means you.")),
+        ("list", "Expect security questionnaires", "What lands on you", [("security questionnaires", "Security questionnaires"), ("contract clauses", "Incident-reporting clauses"), ("requests for evidence", "Requests for evidence")]),
+        ("list", "Get ready now", "Get ready now", [("named security owner", "A named security owner"), ("incident process", "Notify customers within hours"), ("proof that", "Proof you patch and control access")]),
+    ]},
+    "02-1300": {"kicker": "API SECURITY", "cta": False, "beats": [
+        ("hook", None, ("The token", "signed itself."), ("code", ['{ "alg": "none",', '  "typ": "JWT" }', '{ "role": "admin" }', "signature: (empty)"], [0, 3])),
+        ("stmt", "common JWT", ("Three JWT", "mistakes.")),
+        ("code", "Accepting whatever algorithm", ["# accept any algorithm", "jwt.decode(t, key)", "# pin it", "jwt.decode(t, key, ['RS256'])"], [3]),
+        ("stmt", "Weak signing secrets", ("Weak secrets crack offline.", "Use long random keys.")),
+        ("stmt", "Tokens that never", ("Tokens that never expire?", "Keep them short-lived.")),
+        ("stmt", "is only as", ("Only as strong as", "the code that checks it.")),
+    ]},
+    "02-1500": {"kicker": "CAREER", "cta": True, "beats": [
+        ("hook", None, ("Developer", "to AppSec."), ("ui", ["Career path", "Software developer", "Application security engineer"], [2])),
+        ("stmt", "The honest path", ("The honest", "path.")),
+        ("list", "First fix security", "Four steps", [("First fix", "Fix security bugs in your code"), ("Second learn", "Break practice apps, never production"), ("Third join", "Join code reviews"), ("Fourth write", "Write up what you learn")]),
+        ("stmt", "Within a year", ("Real fixes. Real reviews.", "Real write-ups.")),
+    ]},
+    "02-1700": {"kicker": "AUTHENTICATION", "cta": False, "beats": [
+        ("hook", None, ("A million guesses", "a minute."), ("code", ["POST /verify-otp  000000  401", "POST /verify-otp  000001  401", "POST /verify-otp  000002  401", "... no limit"], [3])),
+        ("stmt", "Login", ("Login. Codes. Reset.", "They need limits most.")),
+        ("stmt", "Limit attempts per", ("Limit per account,", "not just per IP.")),
+        ("list", "Slow down or", "Then", [("Slow down", "Slow down or lock"), ("Expire a code", "Expire codes after wrong tries"), ("alert when", "Alert on bursts of failures")]),
+        ("stmt", "Guessing only works", ("Guessing only works", "when guessing is free.")),
+    ]},
+    "02-1900": {"kicker": "QUESTION", "cta": False, "tail": 1.6, "beats": [
+        ("hook", None, ("Cookie or", "localStorage?"), ("ui", ["Where your app keeps tokens", "HttpOnly cookie", "localStorage"], [1, 2])),
+        ("stmt", "Cookies marked", ("HttpOnly cookies:", "JavaScript can't read them.")),
+        ("stmt", "be read by any", ("localStorage:", "any script can.")),
+        ("stmt", "Which do you", ("Which do you use,", "and why?")),
+    ]},
+    # TUE 3
+    "03-0700": {"kicker": "API SECURITY", "cta": False, "beats": [
+        ("hook", None, ("The field you hid", "is in the JSON."), ("code", ['{ "name": "Ada",', '  "email": "ada@mail.com",', '  "risk_score": 87,', '  "role": "user" }'], [1, 2])),
+        ("stmt", "Hiding a field", ("Hidden in the UI", "isn't access control.")),
+        ("stmt", "Number", ("OWASP API #3:", "property level authorization.")),
+        ("list", "It covers", "Two problems", [("Reading properties", "Reading what you shouldn't see"), ("changing properties", "Changing what you shouldn't touch")]),
+        ("stmt", "Decide for every", ("Fields per role, per endpoint.", "Enforced on the server.")),
+    ]},
+    "03-0900": {"kicker": "COMPLIANCE", "cta": True, "beats": [
+        ("hook", None, ("Your customer asked", "for SOC 2."), ("ui", ["Security review", "Customer: Please share your SOC 2", "Type II, last 12 months"], [1])),
+        ("stmt", "an independent audit", ("An independent audit", "of your controls.")),
+        ("list", "A type", "Type I vs Type II", [("designed well", "Type I: designed well, one date"), ("actually worked", "Type II: worked, over months")]),
+        ("stmt", "Most customers want", ("Most customers", "want Type II.")),
+        ("list", "Start with what", "Auditors test first", [("Access reviews", "Access reviews"), ("change management", "Change management"), ("monitoring", "Monitoring"), ("incident response", "Incident response")]),
+    ]},
+    "03-1300": {"kicker": "API SECURITY", "cta": False, "beats": [
+        ("hook", None, ("Your API", "says too much."), ("ui", ["Screen shows", "Ada O.  [photo]", "API sends: email, phone, birth date, flags"], [2])),
+        ("stmt", "Anyone who opens", ("Anyone with the network tab", "can read it.")),
+        ("stmt", "It happens when", ("Returns the database object.", "Lets the app filter.")),
+        ("code", "Filter on the", ["return user            # all fields", "return {", "  name: user.name,", "  photo: user.photo }"], [1, 2, 3]),
+        ("stmt", "Then open your", ("Count the fields", "the app never uses.")),
+    ]},
+    "03-1500": {"kicker": "CAREER", "cta": True, "beats": [
+        ("hook", None, ("Read the", "auth first."), ("ui", ["New codebase", "4,812 files", "Security review due: Friday"], [2])),
+        ("stmt", "Start where the", ("Don't read top to bottom.", "Start where the risk is.")),
+        ("list", "First authentication", "Where to look first", [("First authentication", "Authentication"), ("Second authorization", "Authorization"), ("Third every place", "Writes of money or personal data"), ("Fourth anything", "Input from outside")]),
+        ("stmt", "Most serious bugs", ("Most serious bugs", "live there.")),
+    ]},
+    "03-1700": {"kicker": "API SECURITY", "cta": False, "wordfix": {"Request": "Requests"}, "beats": [
+        ("hook", None, ("The bill", "is the attack."), ("ui", ["Invoice", "SMS sent: 412,300", "Amount due: $18,553"], [1, 2])),
+        ("stmt", "Number", ("OWASP API #4:", "unrestricted resource consumption.")),
+        ("stmt", "An endpoint that", ("Every call", "costs you money.")),
+        ("list", "Put limits on", "Limit what costs", [("per user", "Requests per user"), ("page sizes", "Page and upload sizes"), ("spending caps", "Spending caps with providers")]),
+        ("stmt", "And alert on", ("Alert on spend", "before the invoice does.")),
+    ]},
+    "03-1900": {"kicker": "QUESTION", "cta": False, "tail": 1.6, "beats": [
+        ("hook", None, ("Fields the app", "never shows?"), ("code", ['{ "name": "Ada",', '  "email": "...",', '  "internal_id": "...",', '  "is_staff": false }'], [1, 2, 3])),
+        ("stmt", "How many fields", ("How many fields", "never reach the screen?")),
+        ("stmt", "Have you checked", ("Have you", "checked yours?")),
+    ]},
+    # WED 4
+    "04-0700": {"kicker": "API SECURITY", "cta": False, "beats": [
+        ("hook", None, ("/admin works", "for users."), ("code", ["DELETE /api/admin/users/42", "Authorization: (normal user)", "-> 204 Deleted"], [2])),
+        ("stmt", "Number", ("OWASP API #5:", "function level authorization.")),
+        ("stmt", "The admin page", ("Hidden in the app.", "Unchecked in the API.")),
+        ("list", "Attackers find these", "How they find them", [("guessing names", "Guessing names"), ("reading the", "Reading the app's code"), ("watching traffic", "Watching traffic")]),
+        ("stmt", "Every endpoint checks", ("Check the role on the server.", "Deny by default.")),
+    ]},
+    "04-0900": {"kicker": "COMPLIANCE", "cta": True, "beats": [
+        ("hook", None, ("Security becomes", "a product rule."), ("ui", ["EU Cyber Resilience Act", "From Sep 2026: report exploited bugs in 24h", "From Dec 2027: full obligations"], [1, 2])),
+        ("stmt", "Since September this", ("Exploited vulnerabilities:", "report within 24 hours.")),
+        ("list", "From December", "From December 2027", [("secure by default", "Secure by default"), ("receive security updates", "Updates for the support period"), ("offer a way", "A way to report vulnerabilities")]),
+        ("list", "For product teams", "Start now", [("vulnerability process", "A vulnerability process"), ("list of components", "A list of components (SBOM)"), ("update plan", "An update plan")]),
+    ]},
+    "04-1300": {"kicker": "SECURE CODING", "cta": False, "wordfix": {"Roll": "Role"}, "beats": [
+        ("hook", None, ("Hiding the button", "isn't security."), ("code", ["{isAdmin && <DeleteButton/>}", "", "curl -X DELETE /api/posts/7", "-> 204 Deleted"], [2, 3])),
+        ("stmt", "Anyone can send", ("Anyone can send", "the request anyway.")),
+        ("stmt", "checks must", ("Role checks live", "on the server.")),
+        ("list", "Keep them in", "Do it once, do it right", [("Keep them in", "One place: a policy layer"), ("Deny by default", "Deny by default"), ("test with", "Test with two accounts")]),
+    ]},
+    "04-1500": {"kicker": "CAREER", "cta": True, "beats": [
+        ("hook", None, ("Security, in", "PM language."), ("ui", ["Roadmap Q4", "Checkout redesign", "Security fix: severity HIGH"], [2])),
+        ("stmt", "They weigh it", ("They weigh it against", "the whole roadmap.")),
+        ("stmt", "Describe risk as", ("Customers. Revenue.", "Launch dates.")),
+        ("list", "Offer options", "Offer options", [("Fix now", "Fix now"), ("fix after launch", "Fix after launch, with a guardrail"), ("accept the risk", "Accept the risk")]),
+        ("stmt", "Security engineers who", ("Invited to planning,", "not just the post-mortem.")),
+    ]},
+    "04-1700": {"kicker": "API SECURITY", "cta": False, "beats": [
+        ("hook", None, ("The bot bought", "everything."), ("ui", ["Sneaker drop", "Stock: 500 pairs", "Sold out in 8 seconds"], [2])),
+        ("stmt", "Number", ("OWASP API #6:", "sensitive business flows.")),
+        ("stmt", "There is no", ("No bug in the code.", "Just no limits.")),
+        ("list", "Then add friction", "Add friction", [("Device and", "Device and behaviour signals"), ("limits per account", "Limits per account"), ("queues for", "Queues for big drops"), ("checks before", "Checks before money leaves")]),
+    ]},
+    "04-1900": {"kicker": "QUESTION", "cta": False, "tail": 1.6, "beats": [
+        ("hook", None, ("Who owns", "API security?"), ("ui", ["Owner", "Backend developers", "Security team", "Nobody in particular"], [3])),
+        ("stmt", "Ownership decides what", ("Ownership decides", "what gets tested.")),
+        ("stmt", "Who is it", ("Who is it", "for you?")),
+    ]},
+    # THU 5
+    "05-0700": {"kicker": "API SECURITY", "cta": False, "beats": [
+        ("hook", None, ("Your server,", "their request."), ("code", ["POST /api/avatar", '{ "url": "http://10.0.0.5/admin" }', "-> server fetches it"], [1, 2])),
+        ("stmt", "Number", ("OWASP API #7:", "server-side request forgery.")),
+        ("list", "The attacker makes", "Where they reach", [("Internal admin panels", "Internal admin panels"), ("databases", "Databases"), ("cloud metadata", "Cloud metadata")]),
+        ("list", "The fix", "The fix", [("domains you fetch", "Allow-list destinations"), ("block private", "Block internal addresses"), ("after every redirect", "Re-check after redirects"), ("run the fetching", "Minimal network access")]),
+    ]},
+    "05-0900": {"kicker": "CLOUD SECURITY", "cta": True, "beats": [
+        ("hook", None, ("One URL.", "Cloud keys."), ("code", ["GET http://169.254.169.254/", "  latest/meta-data/iam/", "  security-credentials/", "-> AccessKeyId: ASIA..."], [3])),
+        ("stmt", "Cloud servers have", ("Metadata service:", "temporary credentials.")),
+        ("stmt", "If your app", ("An SSRF bug", "can ask for them.")),
+        ("list", "On AWS require", "On AWS", [("On AWS", "Require IMDSv2"), ("Limit the role", "Minimal role per server"), ("block metadata", "Block metadata addresses")]),
+    ]},
+    "05-1300": {"kicker": "SECURE CODING", "cta": False, "beats": [
+        ("hook", None, ("It was not", "an image."), ("ui", ["Upload profile picture", "avatar.png.php", "Uploaded"], [1])),
+        ("stmt", "File upload is", ("One of the riskiest", "features you ship.")),
+        ("list", "Check the real", "Upload checks", [("Check the real", "Real file type, not the name"), ("Set size limits", "Size limits"), ("Rename files", "Rename, store separately"), ("Serve them", "Serve from another domain")]),
+        ("stmt", "And never let", ("Never let an upload", "run as code.")),
+    ]},
+    "05-1500": {"kicker": "CAREER", "cta": True, "beats": [
+        ("hook", None, ("Scope it", "right."), ("ui", ["Pentest report", "Scope: marketing website", "Findings: 0 critical"], [1])),
+        ("stmt", "Scope it badly", ("A clean report", "on the wrong thing.")),
+        ("list", "Start with what", "In scope", [("Money movement", "Money movement"), ("customer data", "Customer data"), ("admin access", "Admin access"), ("Include the APIs", "APIs and mobile apps too")]),
+        ("stmt", "And book the", ("Book the retest", "before the test starts.")),
+    ]},
+    "05-1700": {"kicker": "API SECURITY", "cta": False, "beats": [
+        ("hook", None, ("The error told them", "everything."), ("code", ["500 Internal Server Error", "PG::UndefinedColumn", "app/models/user.rb:142", "Rails 6.1.4"], [1, 2, 3])),
+        ("stmt", "Number", ("OWASP API #8:", "security misconfiguration.")),
+        ("list", "Stack traces in", "Common misconfigurations", [("Stack traces", "Stack traces in production"), ("that trust any", "CORS that trusts anyone"), ("Debug endpoints", "Debug endpoints on"), ("Missing security headers", "Missing headers")]),
+        ("stmt", "Generic errors for", ("Generic errors for users.", "Detailed logs for you.")),
+    ]},
+    "05-1900": {"kicker": "QUESTION", "cta": False, "tail": 1.6, "beats": [
+        ("hook", None, ("What do your", "errors reveal?"), ("code", ["GET /api/orders/abc", "-> 500", "-> ???"], [2])),
+        ("stmt", "A stack trace", ("Stack trace? Database?", "Framework version?")),
+        ("stmt", "Try it today", ("Try it today.", "What did you find?")),
+    ]},
+    # FRI 6
+    "06-0700": {"kicker": "API SECURITY", "cta": False, "beats": [
+        ("hook", None, ("v1 is", "still online."), ("code", ["api.example.com/v3   current", "api.example.com/v2   deprecated", "api.example.com/v1   still live"], [2])),
+        ("stmt", "Number", ("OWASP API #9:", "improper inventory management.")),
+        ("stmt", "Old versions beta", ("Old versions, test hosts:", "the easiest way in.")),
+        ("list", "Keep a living", "Keep a living list", [("every API host", "Every host and version"), ("an owner", "An owner"), ("retirement date", "A retirement date"), ("scan for hosts", "Scan for unlisted hosts")]),
+    ]},
+    "06-0900": {"kicker": "COMPLIANCE", "cta": True, "beats": [
+        ("hook", None, ("The auditor asks", "engineers this."), ("ui", ["ISO 27001 audit", "Auditor: Who approved this change?", "Engineer: ..."], [1])),
+        ("list", "Expect questions like", "Expect these questions", [("Who approved", "Who approved this change?"), ("access rights", "When were access rights reviewed?"), ("How fast", "How fast are criticals fixed?"), ("backup last restored", "When was a backup restored?")]),
+        ("stmt", "Every answer needs", ("Every answer needs evidence.", "Tickets, logs, dates.")),
+        ("stmt", "Build that evidence", ("Build it into the workflow.", "Audits stop being a scramble.")),
+    ]},
+    "06-1300": {"kicker": "DATA PROTECTION", "cta": False, "beats": [
+        ("hook", None, ("Staging had", "real customers."), ("ui", ["staging-db", "customers: 184,220 rows", "copied from production"], [1, 2])),
+        ("stmt", "Staging environments often", ("Weaker access.", "No monitoring.")),
+        ("stmt", "Fill them with", ("The easiest target", "in the company.")),
+        ("list", "Use synthetic or", "Instead", [("synthetic or masked", "Synthetic or masked data"), ("protect staging", "Or protect it like production"), ("delete old copies", "Delete old copies on schedule")]),
+    ]},
+    "06-1500": {"kicker": "CAREER", "cta": True, "beats": [
+        ("hook", None, ("Certs or", "skills?"), ("ui", ["Candidate", "Certifications: 6", "Write-ups and findings: 0"], [2])),
+        ("stmt", "Certifications get you", ("Certs get you", "past filters.")),
+        ("stmt", "Skills get you", ("Skills get you", "through the interview.")),
+        ("list", "The strongest profile", "The strongest profile", [("one relevant certification", "One relevant certification"), ("visible proof", "Write-ups"), ("tools", "Tools you've built"), ("findings", "Findings you've reported")]),
+        ("stmt", "Hiring managers remember", ("They remember the real bug,", "not the acronyms.")),
+    ]},
+    "06-1700": {"kicker": "API SECURITY", "cta": False, "beats": [
+        ("hook", None, ("You trusted", "their API."), ("code", ["resp = partner.get_rates()", "db.save(resp)        # unchecked", "render(resp.note)    # unchecked"], [1, 2])),
+        ("stmt", "Number", ("OWASP API #10:", "unsafe consumption of APIs.")),
+        ("stmt", "If the partner", ("Partner compromised?", "So are you.")),
+        ("list", "Validate", "Treat it like user input", [("Validate", "Validate their data"), ("encrypted connections", "Encrypted connections"), ("set timeouts", "Careful redirects, timeouts"), ("limit what", "Limit what it can trigger")]),
+    ]},
+    "06-1900": {"kicker": "QUESTION", "cta": False, "tail": 1.6, "beats": [
+        ("hook", None, ("Which one do you", "see most?"), ("ui", ["OWASP API Top 10", "Broken object authorization", "Broken authentication", "Misconfiguration"], [1, 2, 3])),
+        ("stmt", "Which one do", ("Which one do you see", "in real systems?")),
+        ("stmt", "Tell me which", ("Tell me which,", "and where.")),
+    ]},
+    # SAT 7
+    "07-0700": {"kicker": "API SECURITY", "cta": False, "beats": [
+        ("hook", None, ("One query,", "every record."), ("code", ["query {", "  users(first: 100000) {", "    email phone address", "  } }"], [1, 2])),
+        ("list", "Introspection hands attackers", "GraphQL risks", [("Introspection hands", "Introspection: a map of your schema"), ("Batching lets", "Batching: guesses past rate limits"), ("deeply nested", "Nesting: exhausts the server")]),
+        ("list", "Turn introspection off", "Fixes", [("Turn introspection off", "Introspection off in production"), ("Limit query depth", "Limit depth and complexity"), ("Count each operation", "Count batched operations"), ("check authorization", "Authorize every field")]),
+    ]},
+    "07-0900": {"kicker": "DEVSECOPS", "cta": True, "beats": [
+        ("hook", None, ("Test it on", "every merge."), ("ui", ["Pull request #482", "Security checks: 4 passed", "Ready to merge"], [1])),
+        ("stmt", "A yearly pentest", ("A yearly pentest", "checks it once.")),
+        ("list", "First scan dependencies", "Automate on every merge", [("First scan", "Dependency and secret scans"), ("Second check", "Endpoints without auth"), ("Third run", "Two users, one must fail"), ("Fourth scan", "Scan the running app")]),
+        ("stmt", "Fail the build", ("Fail only on serious issues.", "Humans for logic flaws.")),
+    ]},
+    "07-1300": {"kicker": "WEB SECURITY", "cta": False, "beats": [
+        ("hook", None, ("CORS isn't", "a firewall."), ("code", ["Access-Control-Allow-Origin:", "  https://evil.example", "Access-Control-Allow-Credentials:", "  true"], [1, 3])),
+        ("stmt", "It decides which", ("It decides what browsers", "let websites read.")),
+        ("stmt", "Scripts servers and", ("Scripts and servers", "ignore it.")),
+        ("stmt", "Reflecting any origin", ("Any origin + credentials", "= user data exposed.")),
+        ("list", "Allow only your", "Do this", [("Allow only", "Allow only your domains"), ("never a wildcard", "No wildcard with credentials"), ("protect the API", "Real auth behind it")]),
+    ]},
+    "07-1500": {"kicker": "CAREER", "cta": True, "beats": [
+        ("hook", None, ("Explain it to", "your CEO."), ("ui", ["Finding", "SQL injection in /search", "CEO: \"So what?\""], [2])),
+        ("stmt", "They need to", ("What could happen.", "What it costs to fix.")),
+        ("list", "Use one sentence", "How to explain it", [("one sentence for impact", "One sentence of impact"), ("how hard", "How hard to exploit"), ("Give the fix", "Fix, cost, timeline"), ("compare it", "Compare to a known risk")]),
+        ("stmt", "Clear explanations get", ("Clear gets budget.", "Jargon gets postponed.")),
+    ]},
+    "07-1700": {"kicker": "SECRETS", "cta": False, "beats": [
+        ("hook", None, ("Deleted file.", "Key still there."), ("code", ["git rm config/keys.env", "git log -p | grep sk_live", "+ STRIPE_KEY=sk_live_51H..."], [2])),
+        ("stmt", "Once a secret", ("Committed once?", "Treat it as leaked.")),
+        ("stmt", "Rotate it first", ("Rotate first.", "Clean history after.")),
+        ("list", "Then prevent the", "Prevent the next one", [("Scan for secrets", "Scan before every commit"), ("secrets manager", "Use a secrets manager"), ("check old repositories", "Check old repos and forks")]),
+    ]},
+    "07-1900": {"kicker": "QUESTION", "cta": False, "tail": 1.6, "beats": [
+        ("hook", None, ("Last secret", "you found?"), ("ui", ["Found in", "A repository", "A chat", "A log file"], [1, 2, 3])),
+        ("stmt", "No names", ("No names.", "Just where.")),
+        ("stmt", "Where was it", ("How long had it", "been there?")),
+    ]},
+    # SUN 8
+    "08-0700": {"kicker": "API SECURITY", "cta": False, "beats": [
+        ("hook", None, ("Key or", "token?"), ("code", ["x-api-key: k_9f2e...", "", "Authorization: Bearer eyJ...", "scope: read:orders"], [0, 2])),
+        ("list", "An API key", "API key", [("identifies an application", "Identifies an app"), ("It is simple", "Long-lived, often broad"), ("Good for", "Server-to-server")]),
+        ("list", "An OAuth token", "OAuth token", [("represents", "A user's permission"), ("limited scope", "Limited scope, short life"), ("acts on behalf", "App acts for a user")]),
+        ("stmt", "Whichever you use", ("Scope it. Rotate it.", "Never ship one in an app.")),
+    ]},
+    "08-0900": {"kicker": "THIRD-PARTY RISK", "cta": True, "beats": [
+        ("hook", None, ("The vendor", "had admin."), ("ui", ["Connected apps", "SupportDesk Pro: admin", "Last reviewed: never"], [1, 2])),
+        ("stmt", "They broke into", ("They broke into", "your vendor.")),
+        ("stmt", "Support tools payroll", ("Support. Payroll. Analytics.", "Contractors.")),
+        ("list", "List every vendor", "Do this", [("List every vendor", "List every vendor"), ("least access", "Least access, MFA"), ("every quarter", "Review every quarter"), ("contracts require", "Breach notice in contract")]),
+    ]},
+    "08-1300": {"kicker": "LOGGING", "cta": False, "beats": [
+        ("hook", None, ("Log these", "three things."), ("ui", ["Incident channel", "\"What happened?\"", "Logs: none"], [2])),
+        ("list", "Authentication Logins", "Log these", [("Authentication", "Authentication"), ("Admin actions", "Admin actions"), ("Money", "Money: payments, refunds, payouts")]),
+        ("stmt", "Send logs somewhere", ("Where attackers", "can't delete them.")),
+        ("stmt", "And never log", ("Never log passwords,", "tokens or card numbers.")),
+    ]},
+    "08-1500": {"kicker": "CAREER", "cta": True, "wordfix": {"champion's": "champions", "program": "programme"}, "beats": [
+        ("hook", None, ("One champion", "per team."), ("ui", ["Engineering", "Developers: 200", "Security engineers: 1"], [1, 2])),
+        ("stmt", "A security", ("A security champions", "programme.")),
+        ("list", "One interested developer", "How it works", [("One interested", "One developer per team"), ("few hours", "A few hours a month"), ("Give them training", "Training + a direct line"), ("real decisions", "Real decisions")]),
+        ("stmt", "They catch issues", ("Issues caught in design,", "not after release.")),
+        ("stmt", "their work", ("Make it count", "toward promotion.")),
+    ]},
+    "08-1700": {"kicker": "SUPPLY CHAIN", "cta": False, "beats": [
+        ("hook", None, ("One package.", "Every app."), ("code", ["npm install tiny-helper", "added 1 package", "  + 214 dependencies"], [2])),
+        ("stmt", "Most of what", ("Most of what you ship", "is other people's code.")),
+        ("list", "Keep a list", "Do this", [("bill of materials", "Keep an SBOM"), ("Pin versions", "Pin versions, lock files"), ("Scan for known", "Scan every build"), ("Be careful", "Be wary of new packages")]),
+        ("stmt", "And when a", ("Know within an hour", "which apps are hit.")),
+    ]},
+    "08-1900": {"kicker": "QUESTION", "cta": False, "tail": 1.6, "beats": [
+        ("hook", None, ("How many", "dependencies?"), ("ui", ["Your main app", "Direct: 42", "Total: ?"], [2])),
+        ("stmt", "Most teams guess", ("Most teams", "guess low.")),
+        ("stmt", "Check and tell", ("Check, and tell me", "the real number.")),
+    ]},
+}
